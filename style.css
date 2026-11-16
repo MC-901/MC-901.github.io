@@ -1,0 +1,286 @@
+/* ============ 全局变量 ============ */
+:root {
+  /* 玻璃材质参数 */
+  --glass-bg: rgba(255, 255, 255, 0.10);
+  --glass-bg-strong: rgba(255, 255, 255, 0.16);
+  --glass-border: rgba(255, 255, 255, 0.22);
+  --glass-highlight: rgba(255, 255, 255, 0.45);
+  --blur: 16px;
+
+  /* 文字与强调色 */
+  --text: #f4f7fb;
+  --text-muted: rgba(244, 247, 251, 0.72);
+  --accent: #7cb1ff;
+  --accent-2: #a78bfa;
+
+  /* 圆角与阴影 */
+  --radius-lg: 22px;
+  --radius-md: 16px;
+  --shadow: 0 10px 40px rgba(0, 0, 0, 0.35);
+
+  /* 壁纸：换壁纸只改这一行 */
+  --wallpaper: url("https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=2000&auto=format&fit=crop");
+}
+
+/* ============ 基础重置 ============ */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+    "Microsoft YaHei", sans-serif;
+  color: var(--text);
+  line-height: 1.75;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  /* 壁纸：居中、铺满、固定不随滚动 */
+  background: #0b1020 var(--wallpaper) center / cover no-repeat fixed;
+}
+
+/* 壁纸上方遮罩：压暗 + 彩色光晕，保证文字可读 */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(900px 500px at 15% 0%, rgba(124, 177, 255, 0.28), transparent 65%),
+    radial-gradient(800px 500px at 90% 15%, rgba(167, 139, 250, 0.22), transparent 60%),
+    linear-gradient(180deg, rgba(6, 10, 24, 0.45) 0%, rgba(6, 10, 24, 0.78) 100%);
+}
+
+.container { width: min(1100px, 92%); margin: 0 auto; }
+
+/* 滚动条（可选） */
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.25);
+  border-radius: 999px;
+}
+
+/* ============ 导航栏（玻璃） ============ */
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(12, 18, 36, 0.32);
+  border-bottom: 1px solid var(--glass-border);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+  backdrop-filter: blur(18px) saturate(160%);
+}
+.nav-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 68px;
+}
+.logo {
+  color: var(--text);
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 1.15rem;
+  letter-spacing: 0.3px;
+}
+.nav-inner nav { display: flex; gap: 8px; }
+.nav-inner nav a {
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 0.95rem;
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  transition: all 0.25s ease;
+}
+.nav-inner nav a:hover {
+  color: var(--text);
+  background: var(--glass-bg);
+  border-color: var(--glass-border);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+
+/* ============ 首屏（大玻璃卡片） ============ */
+.hero { padding: 80px 0 60px; }
+.hero-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 6px;
+  padding: 56px 32px;
+  border-radius: var(--radius-lg);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow), inset 0 1px 0 var(--glass-highlight);
+  -webkit-backdrop-filter: blur(var(--blur)) saturate(150%);
+  backdrop-filter: blur(var(--blur)) saturate(150%);
+}
+
+/* 头像：玻璃圆环 */
+.avatar {
+  width: 96px;
+  height: 96px;
+  display: grid;
+  place-items: center;
+  font-size: 44px;
+  border-radius: 50%;
+  margin-bottom: 14px;
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.28), rgba(255, 255, 255, 0.06));
+  border: 1px solid var(--glass-highlight);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6), 0 8px 24px rgba(0, 0, 0, 0.3);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+
+h1 {
+  font-size: clamp(1.7rem, 4vw, 2.6rem);
+  line-height: 1.3;
+  text-shadow: 0 2px 24px rgba(0, 0, 0, 0.45);
+}
+.highlight {
+  background: linear-gradient(120deg, var(--accent), var(--accent-2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.subtitle {
+  color: var(--text-muted);
+  font-size: 1rem;
+  margin-top: 4px;
+}
+
+/* 按钮 */
+.buttons { display: flex; gap: 14px; margin-top: 26px; flex-wrap: wrap; justify-content: center; }
+.btn {
+  display: inline-block;
+  padding: 12px 28px;
+  border-radius: 999px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.95rem;
+  border: 1px solid var(--glass-border);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+.btn-primary {
+  color: #fff;
+  background: linear-gradient(135deg, rgba(124, 177, 255, 0.6), rgba(167, 139, 250, 0.55));
+  box-shadow: 0 8px 26px rgba(90, 130, 220, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+.btn-ghost {
+  color: var(--text);
+  background: var(--glass-bg);
+  box-shadow: inset 0 1px 0 var(--glass-highlight);
+}
+.btn:hover { transform: translateY(-2px); }
+
+/* ============ 普通区块 ============ */
+.section { padding: 46px 0; }
+.section h2 {
+  font-size: 1.5rem;
+  margin-bottom: 12px;
+  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.45);
+}
+.section h2::after {
+  content: "";
+  display: block;
+  width: 46px;
+  height: 3px;
+  margin-top: 8px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+}
+.section-desc { color: var(--text-muted); max-width: 720px; }
+
+/* ============ 项目卡片（玻璃） ============ */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 22px;
+  margin-top: 30px;
+}
+.card {
+  padding: 26px 24px;
+  border-radius: var(--radius-md);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow), inset 0 1px 0 var(--glass-highlight);
+  -webkit-backdrop-filter: blur(var(--blur)) saturate(150%);
+  backdrop-filter: blur(var(--blur)) saturate(150%);
+  transition: transform 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
+}
+.card:hover {
+  transform: translateY(-6px);
+  background: var(--glass-bg-strong);
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.45), inset 0 1px 0 var(--glass-highlight);
+}
+.card h3 { font-size: 1.1rem; margin-bottom: 8px; }
+.card p { color: var(--text-muted); font-size: 0.94rem; }
+.card-link {
+  display: inline-block;
+  margin-top: 14px;
+  color: var(--accent);
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+.card-link:hover { color: var(--accent-2); }
+
+/* ============ 联系方式（玻璃列表） ============ */
+.contact-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 24px;
+}
+.contact-list li {
+  padding: 14px 20px;
+  border-radius: var(--radius-md);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  box-shadow: inset 0 1px 0 var(--glass-highlight);
+  -webkit-backdrop-filter: blur(var(--blur));
+  backdrop-filter: blur(var(--blur));
+  transition: background 0.3s ease, transform 0.3s ease;
+}
+.contact-list li:hover {
+  background: var(--glass-bg-strong);
+  transform: translateX(4px);
+}
+.contact-list a {
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px dashed rgba(124, 177, 255, 0.5);
+}
+.contact-list a:hover { color: var(--accent-2); }
+
+/* ============ 页脚 ============ */
+.footer {
+  margin-top: 40px;
+  padding: 22px 0;
+  text-align: center;
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  background: rgba(12, 18, 36, 0.3);
+  border-top: 1px solid var(--glass-border);
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+}
+
+/* ============ 响应式 ============ */
+@media (max-width: 640px) {
+  .nav-inner {
+    flex-direction: column;
+    height: auto;
+    padding: 12px 0;
+    gap: 8px;
+  }
+  .hero { padding: 48px 0 36px; }
+  .hero-inner { padding: 40px 20px; }
+  .section { padding: 34px 0; }
+  /* 移动端 fixed 壁纸兼容性较差，改为滚动 */
+  body { background-attachment: scroll; }
+}
